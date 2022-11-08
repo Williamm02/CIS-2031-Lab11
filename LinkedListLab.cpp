@@ -32,6 +32,14 @@ int length(List* l){
 
 //Get the Nth item from the list
 string get(List* l, int index){
+    if ( 1 == NULL ){
+        return "";
+    } else if ( index == 0 ){
+        return l->value; 
+    } else {
+        return get(l->next, index - 1);
+    }
+    
     while( l != NULL && index > 0 ){
             index--;
             l = l->next;
@@ -45,29 +53,21 @@ string get(List* l, int index){
 
 //Returns true if the list contains needle
 bool contains(List* l, string needle){
-    while ( l != NULL ){
-        if ( l->value == needle ){
-            return true;
-        }
-        l = l->next;
-    }
-    return false;
-}
+    if ( l == NULL )
+        return false;
+    if ( l->value == needle )
+        return true;
+    return contains( l->next, needle );
+}  
 
 //Add an item to the list
 void insertAt(List* &list, int pos, string value){
     if ( list == NULL || pos == 0 ){
         list = new List{value, list};
     } else {
-        List* l = list;
-        while( l->next != NULL && pos > 1 ){
-            pos--;
-            l = l->next;
-        }
-        l->next = new List{value, l->next};
-    }
+       insertAt( list->next, pos - 1, value);
 }
-
+}
 //Remove an item from the list
 void deleteAt(List* &list, int pos){
     if ( list != NULL && pos == 0 ){
